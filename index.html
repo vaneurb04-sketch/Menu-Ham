@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Valhalla Ground | Menú</title>
+<style>
+:root{--gold:#f2c94c;--bg:#090909;--card:#151515;--text:#fff;--muted:#c9c9c9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:720px;margin:auto;padding:16px}
+.hero{border:1px solid #4b4020;border-radius:22px;padding:28px 18px;text-align:center;background:linear-gradient(145deg,#050505,#202020)}
+.small{font-size:12px;letter-spacing:3px;color:var(--gold);font-weight:800}
+h1{font-size:34px;margin:8px 0 4px}.sub{color:#ddd}
+.tabs{display:flex;gap:8px;overflow:auto;padding:14px 0;position:sticky;top:0;background:rgba(9,9,9,.96);z-index:5}
+.tabs button{border:1px solid #444;background:#171717;color:white;border-radius:13px;padding:12px 14px;white-space:nowrap;font-weight:700}
+.tabs button.active{background:var(--gold);color:#111;border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:var(--card);border:1px solid #303030;border-radius:18px;padding:16px;display:flex;flex-direction:column}
+.emoji{font-size:34px}.name{font-weight:900;font-size:18px;margin-top:8px}.desc{color:var(--muted);font-size:13px;line-height:1.4;margin-top:6px;flex:1}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:15px;gap:8px}.price{color:var(--gold);font-size:22px;font-weight:900}
+.detail{border:1px solid #555;background:#202020;color:#fff;border-radius:10px;padding:9px 10px}
+.info{margin-top:16px;border:1px solid #303030;background:#151515;border-radius:18px;padding:18px;line-height:1.55}.info div{margin:7px 0}
+.order{display:block;text-align:center;background:var(--gold);color:#111;text-decoration:none;font-weight:900;border-radius:14px;padding:14px;margin-top:14px}
+.note{font-size:12px;color:#aaa;margin-top:12px;text-align:center}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.modalbox{background:#171717;border:1px solid #444;border-radius:20px;padding:22px;max-width:440px;width:100%}
+.close{width:100%;padding:12px;border-radius:11px;background:#252525;color:#fff;border:1px solid #555;margin-top:15px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}h1{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="small">HAMBURGUESAS • HOT DOGS • TACOS</div>
+<h1>🔥 VALHALLA GROUND 🔥</h1>
+<div class="sub">Carne de excelencia</div>
+</section>
+
+<nav class="tabs" aria-label="Categorías">
+<button class="active" data-cat="hamburguesas">🍔 Hamburguesas</button>
+<button data-cat="hotdogs">🌭 Hot Dogs</button>
+<button data-cat="alitas">🍗 Alitas</button>
+<button data-cat="tacos">🌮 Tacos</button>
+<button data-cat="extras">🍟 Extras</button>
+</nav>
+
+<main id="products" class="grid"></main>
+
+<section class="info">
+<div>📞 <b>Pedidos:</b> 221 238 5265</div>
+<div>🕐 <b>Horario:</b> Jueves a sábado de 5:00 p.m. a 12:00 a.m.</div>
+<div>🕐 <b>Domingo:</b> de 6:00 p.m. a 12:00 a.m.</div>
+<div>📍 <b>Dirección:</b> 2 Norte #50, Loma Bonita Caleras, 72100 Puebla, Pue.</div>
+<a class="order" href="https://wa.me/522212385265" target="_blank">💬 PEDIR POR WHATSAPP</a>
+<div class="note">* Aderezo extra: $15</div>
+</section>
+</div>
+
+<div id="modal" class="modal">
+<div class="modalbox">
+<div id="modalContent"></div>
+<button class="close" id="close">Cerrar</button>
+</div>
+</div>
+
+<script>
+const products=[
+{c:"hamburguesas",e:"🍔",n:"Hamburguesa Tradicional",p:69,d:"Carne, tocino, jamón, queso manchego, cebolla caramelizada, jitomate y aderezo."},
+{c:"hamburguesas",e:"🍔",n:"Hamburguesa Hawaiana",p:79,d:"Carne, tocino, jamón, piña, salchicha, queso manchego, champiñones, cebolla caramelizada, jitomate y aderezo."},
+{c:"hamburguesas",e:"🍔",n:"Hamburguesa Especial",p:95,d:"Doble carne, tocino, salchicha, jamón, champiñones, queso manchego, cebolla caramelizada, jitomate y aderezo."},
+{c:"hotdogs",e:"🌭",n:"Hot Dog",p:65,d:"Salchicha, tocino, jamón, champiñones, lechuga, cebolla caramelizada y aderezo."},
+{c:"alitas",e:"🍗",n:"Alitas al carbón · 8 piezas",p:69,d:"Sabores: piña habanero, mango habanero, ranch, salsa macha, BBQ, ajo parmesano, buffalo o habanero tatemado. Incluye complementos."},
+{c:"tacos",e:"🌮",n:"Tacos de asada y longaniza",p:22,d:"Orden de tacos de asada y longaniza."},
+{c:"tacos",e:"🌮",n:"Tacos combinados",p:25,d:"Combinación de asada y longaniza."},
+{c:"tacos",e:"🫓",n:"Mulitas",p:45,d:"Mulitas preparadas con carne y queso."},
+{c:"extras",e:"🍟",n:"Papas a la francesa chicas",p:50,d:"Orden de papas a la francesa."},
+{c:"extras",e:"🍟",n:"Papas a la francesa grandes",p:70,d:"Orden grande de papas a la francesa."},
+{c:"extras",e:"🥫",n:"Aderezo extra",p:15,d:"Agrega un aderezo extra a tu pedido."}
+];
+
+const productsBox=document.getElementById("products");
+const modal=document.getElementById("modal");
+const modalContent=document.getElementById("modalContent");
+
+function render(cat){
+ productsBox.innerHTML=products.filter(x=>x.c===cat).map((x,i)=>`
+ <article class="card">
+  <div class="emoji">${x.e}</div>
+  <div class="name">${x.n}</div>
+  <div class="desc">${x.d}</div>
+  <div class="bottom"><span class="price">$${x.p}</span><button class="detail" data-i="${products.indexOf(x)}">Detalles</button></div>
+ </article>`).join("");
+}
+document.querySelectorAll("[data-cat]").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-cat]").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active"); render(btn.dataset.cat);
+ });
+});
+productsBox.addEventListener("click",e=>{
+ const b=e.target.closest("[data-i]"); if(!b)return;
+ const x=products[Number(b.dataset.i)];
+ modalContent.innerHTML=`<div style="font-size:40px">${x.e}</div><h2>${x.n}</h2><p style="color:#c9c9c9;line-height:1.5">${x.d}</p><div style="color:#f2c94c;font-size:26px;font-weight:900">$${x.p}</div>`;
+ modal.classList.add("show");
+});
+document.getElementById("close").onclick=()=>modal.classList.remove("show");
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")};
+render("hamburguesas");
+</script>
+</body>
+</html>
